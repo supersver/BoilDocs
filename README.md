@@ -1,64 +1,90 @@
-# BoilDocs — Documentation Summarizer
+# BoilDocs
 
-A small developer-focused web app built with React, TypeScript, Vite and Tailwind CSS, with n8n acting as the automation/AI backend.
+> Turn technical documentation into concise, structured, and actionable notes for developers.
+
+BoilDocs is a developer-focused documentation summarizer built with **React, TypeScript, Vite, Tailwind CSS, n8n, and OpenRouter**.
+
+Paste a documentation URL or raw documentation, and BoilDocs processes the content and turns it into a structured summary containing key concepts, important sections, quick-start information, code examples, caveats, difficulty, and estimated reading time.
+
+The frontend and automation layer are intentionally separated: the React application handles the user experience, while n8n handles documentation processing and AI-powered summarization.
+
+---
+
+## Features
+
+- Summarize documentation from a URL
+- Summarize pasted documentation text
+- Extract important concepts
+- Generate structured documentation sections
+- Generate quick-start guidance
+- Extract useful code examples
+- Highlight caveats and important considerations
+- Estimate reading time
+- Classify documentation difficulty
+- Return predictable structured JSON
+- React + TypeScript frontend
+- Tailwind CSS UI
+- n8n automation backend
+- OpenRouter LLM integration
+- Free-model support through OpenRouter
+- Mock-data fallback for frontend development
+
+---
+
+## Why BoilDocs?
+
+Developer documentation can contain a lot of useful information, but finding the important parts often requires reading through large pages first.
+
+BoilDocs focuses on reducing that initial reading overhead by extracting the information developers typically need when learning or evaluating a technology.
+
+```text
+Long Documentation
+        ↓
+     BoilDocs
+        ↓
+Structured Developer Notes
+```
 
 ## Architecture
 
-```text
-React + TypeScript + Tailwind
-          |
-          | POST { type, value }
-          v
-      n8n Webhook
-          |
-          +--> URL -> HTTP Request -> clean HTML/text
-          |
-          +--> Text -> normalize input
-          |
-          v
-      LLM summarization
-          |
-          v
-   Structured JSON response
-          |
-          v
-        React UI
 ```
-
-The app intentionally falls back to mock data when `VITE_N8N_WEBHOOK_URL` is not configured, so the frontend can be developed independently of n8n.
-
-## Run
-
-```bash
-npm install
-cp .env.example .env
-npm run dev
+┌──────────────────────────────────────┐
+│       React + TypeScript             │
+│          + Tailwind CSS              │
+└──────────────────┬───────────────────┘
+                   │
+                   │ POST
+                   │ { type, value }
+                   ▼
+          ┌───────────────────┐
+          │    n8n Webhook    │
+          └─────────┬─────────┘
+                    │
+             ┌──────┴───────┐
+             │              │
+             ▼              ▼
+      Documentation      Pasted Text
+            URL               │
+             │                │
+             ▼                │
+      Fetch Documentation     │
+             │                │
+             ▼                │
+       Extract / Clean        │
+             │                │
+             └───────┬────────┘
+                     ▼
+              Prepare Content
+                     │
+                     ▼
+              LLM Summarization
+                     │
+                     ▼
+              Validate Response
+                     │
+                     ▼
+             Respond to Webhook
+                     │
+                     ▼
+                 React UI
 ```
-
-Then open `http://localhost:5173`.
-
-## n8n setup
-
-Import `n8n/docs-summarizer.json` into an n8n instance and configure the HTTP/LLM credential details described in that workflow. The webhook accepts:
-
-```json
-{
-  "type": "url",
-  "value": "https://developer.mozilla.org/..."
-}
-```
-
-or:
-
-```json
-{
-  "type": "text",
-  "value": "Documentation text..."
-}
-```
-
-The workflow should return the normalized `SummaryResult` JSON shape used in `src/types.ts`.
-
-## Production hardening
-
-Before exposing this publicly, add request authentication, URL allow/deny rules, SSRF protection, payload limits, model/token limits, rate limiting, structured output validation, and a persistent job history. For a public product, do not fetch arbitrary private-network URLs from n8n.

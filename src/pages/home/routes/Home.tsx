@@ -4,6 +4,7 @@ import { InputCard } from "../components/InputCard";
 import { ExamplesSection } from "../components/ExamplesSection";
 import { HowItWorks } from "../components/HowItWorks";
 import { SummaryView } from "../components/SummaryView";
+import { BoilDocsMark } from "../../../components/brand/BoilDocsMark";
 import type { Mode } from "../types";
 
 export default function Home() {
@@ -33,23 +34,8 @@ export default function Home() {
       {/* Header */}
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
         <div className="flex items-center gap-3">
-          <div className="grid size-9 place-items-center rounded-xl border border-white/10 bg-white/[0.04] shadow-[0_10px_40px_rgba(0,0,0,.25)]">
-            {/* BookOpen inline so we don't import for a one-off logo usage */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-white"
-            >
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-            </svg>
+          <div className="grid size-9 place-items-center rounded-xl border border-white/10 bg-[#151823] shadow-[0_10px_40px_rgba(0,0,0,.25)]">
+            <BoilDocsMark className="size-8" />
           </div>
           <div>
             <div className="text-sm font-semibold tracking-tight text-white">

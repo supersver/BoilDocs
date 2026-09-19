@@ -1,5 +1,5 @@
-import type { SummarizeRequest, SummaryResult } from './types'
-import { createMockSummary } from './mock'
+import type { SummarizeRequest, SummaryResult } from '../types'
+import { createMockSummary } from '../../../lib/mock'
 
 const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL as string | undefined
 

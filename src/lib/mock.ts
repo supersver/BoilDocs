@@ -1,4 +1,4 @@
-import type { SummaryResult } from './types'
+import type { SummaryResult } from '../pages/home/types'
 
 export function createMockSummary(input: { type: 'url' | 'text'; value: string }): SummaryResult {
   const fallbackTitle = input.type === 'url'

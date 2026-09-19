@@ -22,3 +22,5 @@ export type SummaryResult = {
 export type SummarizeRequest =
   | { type: 'url'; value: string }
   | { type: 'text'; value: string }
+
+export type Mode = 'url' | 'text'

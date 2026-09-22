@@ -28,7 +28,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-workflow-secret": webhookSecret,
+        "X-Workflow-Secret": webhookSecret,
       },
       body: JSON.stringify(req.body),
     });

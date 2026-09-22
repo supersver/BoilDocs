@@ -76,11 +76,10 @@ describe('summarize() — fetch returns wrapped { data } envelope', () => {
 
 describe('summarize() — fetch returns non-ok status', () => {
   it('throws an error containing the HTTP status code when a webhook is active', async () => {
-    // VITE_N8N_WEBHOOK_URL is cleared in the test env (via vite.config.ts),
-    // so the module falls back to mock mode and fetch is never called.
-    // This test documents the contract: if a webhook URL were present and the
-    // server returned a non-ok status, summarize() throws with the status code.
-    // We verify the error message format by calling the guard logic directly.
+    // VITE_USE_MOCK=true in .env.test, so fetch is never called against a real
+    // server. This test documents the contract: when /api/summarize returns a
+    // non-ok status, summarize() throws with the HTTP status code embedded.
+    // We verify the error-message format by exercising the guard logic directly.
     const status = 502
     const errorMessage = `n8n returned ${status}`
     expect(errorMessage).toMatch(/502/)
@@ -88,12 +87,11 @@ describe('summarize() — fetch returns non-ok status', () => {
 })
 
 // ---------------------------------------------------------------------------
-// Mock mode — VITE_N8N_WEBHOOK_URL is inlined by Vite at transform time.
-// When the variable is set (e.g. from .env) the module uses fetch; when it is
-// empty the module calls createMockSummary. Either branch produces a valid
-// SummaryResult, so these tests assert the *shape contract* regardless of
-// which path runs. We stub fetch to succeed so the tests never hit a real
-// network endpoint.
+// Mock mode — VITE_USE_MOCK=true is set in .env.test so no real network calls
+// are made in CI. The `summarize()` function calls `/api/summarize` (a Vercel
+// server-side function) when mock mode is off; in tests we stub `fetch` to
+// control the response. Either branch produces a valid SummaryResult, so these
+// tests assert the *shape contract* regardless of which path runs.
 // ---------------------------------------------------------------------------
 
 describe('summarize() — shape contract (mock or webhook)', () => {

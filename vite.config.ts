@@ -12,7 +12,7 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/test-setup.ts'],
     css: false,
-    env: { VITE_N8N_WEBHOOK_URL: '' },
+    env: { VITE_USE_MOCK: 'true' },
     typecheck: { tsconfig: './tsconfig.test.json' },
   },
 })
